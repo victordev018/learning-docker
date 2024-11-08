@@ -162,10 +162,19 @@ para fazer o `deploy`, já que nele contém todo o passo a passo para fazer o bu
 > URL: https://hello-world-157i.onrender.com/tasks/all <br>
 > Body: sem corpo <br>
 
+> DELETE /tasks/delete/{id} -> rota deletar uma tarfefa cadastrada, através de seu id <br>
+> URL: https://hello-world-157i.onrender.com/tasks/delete/5 <br>
+> Body: sem corpo <br>
+
+> PUT /tasks/update  -> rota para alterar o status de uma tarefa, sempre alternando entre false e true <br>
+> URL: https://hello-world-157i.onrender.com/tasks/update/1 <br>
+> Body: sem corpo <br>
+
 ## Tecnologias utilizadas
 - Java
 - Spring Boot
 - PostgresSQL
 - JPA
 - Docker
+
 
