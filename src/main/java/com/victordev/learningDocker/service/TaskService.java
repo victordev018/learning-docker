@@ -3,6 +3,7 @@ package com.victordev.learningDocker.service;
 import com.victordev.learningDocker.model.Task;
 import com.victordev.learningDocker.repository.TaskRepository;
 import com.victordev.learningDocker.service.exception.TaskNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,8 +25,9 @@ public class TaskService {
         return repository.findAll();
     }
 
+    @Transactional
     public void deleteById(Long id) {
         Task task = repository.findById(id).orElseThrow(() -> new TaskNotFoundException("Task not found"));
-        repository.delete(task);
+        repository.deleteById(task.getId());
     }
 }
