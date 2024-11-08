@@ -11,7 +11,11 @@ import java.util.List;
 @Service
 public class TaskService {
 
-    private TaskRepository repository;
+    private final TaskRepository repository;
+
+    private Task findById(Long id){
+        return repository.findById(id).orElseThrow(() -> new TaskNotFoundException("Task not found"));
+    }
 
     public TaskService(TaskRepository repository){
         this.repository = repository;
@@ -27,7 +31,17 @@ public class TaskService {
 
     @Transactional
     public void deleteById(Long id) {
-        Task task = repository.findById(id).orElseThrow(() -> new TaskNotFoundException("Task not found"));
+        Task task = findById(id);
         repository.deleteById(task.getId());
+    }
+
+    public Task changePropertyDone(Long id) {
+        Task task = findById(id);
+        if (task.getDone()) {
+            task.setDone(false);
+        } else {
+            task.setDone(true);
+        }
+        return repository.save(task);
     }
 }

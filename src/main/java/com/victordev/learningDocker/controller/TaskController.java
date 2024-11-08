@@ -45,4 +45,11 @@ public class TaskController {
         return ResponseEntity.status(200).build();
     }
 
+    @PutMapping("/update/{id}")
+    public ResponseEntity<TaskCreatedResponseDTO> changePropertyDone(@PathVariable Long id){
+        Task task = taskService.changePropertyDone(id);
+        TaskCreatedResponseDTO response = new TaskCreatedResponseDTO(task.getId());
+        return ResponseEntity.status(200).body(response);
+    }
+
 }
