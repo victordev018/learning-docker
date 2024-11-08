@@ -1,0 +1,22 @@
+services:                       # set the services
+  postgres-db:                  # name service
+    image: postgres:13          # image
+    container_name: postgres-db
+    environment:                # set environment variables
+      POSTGRES_USER: dev
+      POSTGRES_PASSWORD: dev
+      POSTGRES_DB: task_manager_db
+    ports:                      # mirrors the container door to the local one
+      - "5432:5432"
+    volumes:                    # set volume to store data
+      - data:/var/lib/postgresql/data
+    networks:
+      - springboot-network
+
+
+
+volumes:
+  data:
+
+networks:
+  springboot-network:

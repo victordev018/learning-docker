@@ -1,4 +1,4 @@
-package com.victordev.learning_spring_boot;
+package com.victordev.learningDocker;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
