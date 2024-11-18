@@ -5,13 +5,16 @@ import com.victordev.learningDocker.model.User;
 import com.victordev.learningDocker.service.exception.UserNotFoundException;
 import com.victordev.learningDocker.repository.TaskRepository;
 import com.victordev.learningDocker.repository.UserRepository;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
     private UserRepository userRepository;
     private TaskRepository taskRepository;
@@ -19,10 +22,6 @@ public class UserService {
     public UserService(UserRepository userRepository, TaskRepository taskRepository){
         this.userRepository = userRepository;
         this.taskRepository = taskRepository;
-    }
-
-    public User create(User user) {
-        return userRepository.save(user);
     }
 
     public User findById(Long id) {
@@ -33,5 +32,10 @@ public class UserService {
     public List<Task> getTasksFromUser(Long id) {
         findById(id);
         return taskRepository.findAllByUserId(id);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.findByUsername(username);
     }
 }

@@ -33,12 +33,6 @@ public class TaskController {
         return ResponseEntity.status(201).body(response);
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<List<Task>> getAll(){
-        List<Task> allTasks = taskService.getAll();
-        return ResponseEntity.status(200).body(allTasks);
-    }
-
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable Long id){
         taskService.deleteById(id);
