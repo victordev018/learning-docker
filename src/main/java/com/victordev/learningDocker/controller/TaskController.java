@@ -5,30 +5,19 @@ import com.victordev.learningDocker.model.User;
 import com.victordev.learningDocker.model.dto.TaskCreatedResponseDTO;
 import com.victordev.learningDocker.model.dto.TaskRequestDTO;
 import com.victordev.learningDocker.service.TaskService;
-import com.victordev.learningDocker.service.UserService;
-import lombok.extern.slf4j.Slf4j;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
-import static java.rmi.server.LogStream.log;
-
 @RestController
 @RequestMapping("/tasks")
-@Slf4j
+@RequiredArgsConstructor
 public class TaskController {
 
 
-    private TaskService taskService;
-    private UserService userService;
-
-    public TaskController(TaskService taskService, UserService userService){
-        this.taskService = taskService;
-        this.userService = userService;
-    }
+    private final TaskService taskService;
 
     @PostMapping("/create")
     public ResponseEntity<Void> create(@RequestBody TaskRequestDTO requestDTO){
