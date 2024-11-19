@@ -30,9 +30,14 @@ public class TaskController {
         return ResponseEntity.status(201).build();
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteById(@PathVariable Long id){
-        taskService.deleteById(id);
+    @DeleteMapping("/delete/{taskId}")
+    public ResponseEntity<Void> deleteById(@PathVariable Long taskId){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User userAuthenticated = (User) authentication.getPrincipal();
+
+        if(!userService.taskBelongsToTheUser(userAuthenticated, taskId)) throw new AccessDeniedException("User no authorized");
+
+        taskService.deleteById(taskId);
         return ResponseEntity.status(200).build();
     }
 
