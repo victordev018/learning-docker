@@ -6,13 +6,19 @@ import com.victordev.learningDocker.model.dto.TaskCreatedResponseDTO;
 import com.victordev.learningDocker.model.dto.TaskRequestDTO;
 import com.victordev.learningDocker.service.TaskService;
 import com.victordev.learningDocker.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static java.rmi.server.LogStream.log;
+
 @RestController
 @RequestMapping("/tasks")
+@Slf4j
 public class TaskController {
 
 
@@ -25,12 +31,12 @@ public class TaskController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<TaskCreatedResponseDTO> create(@RequestBody TaskRequestDTO requestDTO){
-        User user = userService.findById(requestDTO.user_id());
-        Task task = new Task(null, requestDTO.content(), false, user);
-        task = taskService.create(task);
-        TaskCreatedResponseDTO response = new TaskCreatedResponseDTO(task.getId());
-        return ResponseEntity.status(201).body(response);
+    public ResponseEntity<Void> create(@RequestBody TaskRequestDTO requestDTO){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User userAuthenticated = (User) authentication.getPrincipal();
+        Task task = new Task(null, requestDTO.content(), false, userAuthenticated);
+        taskService.create(task);
+        return ResponseEntity.status(201).build();
     }
 
     @DeleteMapping("/delete/{id}")
