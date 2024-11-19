@@ -7,6 +7,7 @@ import com.victordev.learningDocker.model.dto.TaskResponseDTO;
 import com.victordev.learningDocker.service.exception.UserNotFoundException;
 import com.victordev.learningDocker.repository.TaskRepository;
 import com.victordev.learningDocker.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -16,15 +17,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class UserService implements UserDetailsService {
 
-    private UserRepository userRepository;
-    private TaskRepository taskRepository;
-
-    public UserService(UserRepository userRepository, TaskRepository taskRepository){
-        this.userRepository = userRepository;
-        this.taskRepository = taskRepository;
-    }
+    private final UserRepository userRepository;
+    private final TaskRepository taskRepository;
+    private final TaskService taskService;
 
     public User findById(Long id) {
         Optional<User> promise = userRepository.findById(id);
@@ -42,5 +40,10 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByUsername(username);
+    }
+
+    public boolean taskBelongsToTheUser(User userAuthenticated, Long taskId) {
+        Task task = taskService.findById(taskId);
+        return userAuthenticated.getId().equals(task.getUser().getId());
     }
 }

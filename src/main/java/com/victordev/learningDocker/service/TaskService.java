@@ -14,7 +14,7 @@ import java.util.List;
 public class TaskService {
 
     private final TaskRepository repository;
-    private Task findById(Long id){
+    public Task findById(Long id){
         return repository.findById(id).orElseThrow(() -> new TaskNotFoundException("Task not found"));
     }
 
