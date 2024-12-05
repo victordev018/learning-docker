@@ -31,7 +31,7 @@ public class UserService implements UserDetailsService {
 
     public List<TaskResponseDTO> getTasksFromUser(Long id) {
         findById(id);
-        List<TaskResponseDTO> taskResponseDTOS = taskRepository.findAllByUserId(id).stream()
+        List<TaskResponseDTO> taskResponseDTOS = taskRepository.findAllByUserIdOrderById(id).stream()
                 .map( item -> new TaskResponseDTO(item.getId(), item.getContent(), item.getDone()))
                 .toList();
         return taskResponseDTOS;

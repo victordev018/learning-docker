@@ -48,8 +48,18 @@ public class TaskController {
 
         if(!userService.taskBelongsToTheUser(userAuthenticated, taskId)) throw new AccessDeniedException("User no authorized");
 
-        Task task = taskService.changePropertyDone(taskId);
+        taskService.changePropertyDone(taskId);
         return ResponseEntity.status(200).build();
     }
 
+    @PutMapping("/update/content/{taskId}")
+    public ResponseEntity<Void> updateContentTask(@PathVariable Long taskId, @RequestBody TaskRequestDTO request) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User userAuthentication = (User) authentication.getPrincipal();
+
+        if(!userService.taskBelongsToTheUser(userAuthentication, taskId)) throw new AccessDeniedException("User no authorization");
+
+        taskService.update(taskId, request.content());
+        return ResponseEntity.status(200).build();
+    }
 }

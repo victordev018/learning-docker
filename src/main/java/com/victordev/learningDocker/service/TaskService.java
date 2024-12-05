@@ -28,6 +28,7 @@ public class TaskService {
         repository.deleteById(task.getId());
     }
 
+    @Transactional
     public Task changePropertyDone(Long id) {
         Task task = findById(id);
         if (task.getDone()) {
@@ -36,5 +37,12 @@ public class TaskService {
             task.setDone(true);
         }
         return repository.save(task);
+    }
+
+    @Transactional
+    public void update(Long taskId, String content) {
+        Task task = findById(taskId);
+        task.setContent(content);
+        repository.save(task);
     }
 }
